@@ -35,7 +35,8 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^6.3.5",
     "stripe": "^8.97.0",
-    "twilio": "^3.49.2"
+    "twilio": "^3.49.2",
+    "twitter-lite": "^0.14.0"
   },
   "devDependencies": {
     "jest": "^26.4.2"

@@ -1,0 +1,1 @@
+export const isProdEnv = () => !window.location.href.includes('localhost');
