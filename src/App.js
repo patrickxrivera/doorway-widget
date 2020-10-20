@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import styled from "styled-components";
 
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
@@ -12,8 +12,11 @@ function App() {
   const handleShow = () => setShow(true);
 
   return (
-    <div className="follow-gate-widget__container">
+    <Container>
       <Button onClick={handleShow} variant="secondary">Get Access</Button>
+      <FooterContainer>
+        <span>Made with ❤️ by <a href="https://usemicro.com" target="_blank">Micro</a></span>
+      </FooterContainer>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Welcome to Patrick's Follow Gate 👋</Modal.Title>
@@ -28,8 +31,21 @@ function App() {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </Container>
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center; 
+  margin-top: 16px;
+  flex-direction: column;
+  align-items: center;
+`
+
+const FooterContainer = styled.div`
+  font-size: 12px;
+  margin-top: 12px
+`
 
 export default App;
