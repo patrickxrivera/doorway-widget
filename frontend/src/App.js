@@ -2,14 +2,31 @@ import React, { useState } from 'react';
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import styled from "styled-components";
+import Twitter from "twitter-lite";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+const CONSUMER_KEY = "75iOmCKByNk1bMatgGSMqivBX";
+const CONSUMER_SECRET = "8rZQIMDjFGHGqdtahNn94BjJFIf7WMTzyBSVl0EXSfBNxP4ICv";
 
 function App() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  const handleContinueClick = async () => {
+    // request OAuth token
+    // redirect to auth page
+    // get access token
+    const client = new Twitter({
+      consumer_key: CONSUMER_KEY,
+      consumer_secret: CONSUMER_SECRET
+    })
+
+    const requestToken = await client.getRequestToken("https://usemicro.com");
+    console.log({requestToken});
+  }
 
   return (
     <Container>
@@ -26,7 +43,7 @@ function App() {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleContinueClick}>
             Continue
           </Button>
         </Modal.Footer>
