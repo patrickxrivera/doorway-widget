@@ -1,7 +1,7 @@
 import { isProdEnv } from "./helpers";
 
 // TODO: move to config file
-const API_URL = isProdEnv() ? '' : "http://localhost:5000"
+const API_URL = isProdEnv() ? '' : "https://0d0e68bbb72c.ngrok.io"
 
 export const GET_REQUEST_TOKEN = `${API_URL}/twitter/request-token`;
 

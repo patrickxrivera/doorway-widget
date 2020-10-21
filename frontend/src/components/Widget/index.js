@@ -1,12 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from "react-bootstrap/Button";
 import Modal from "../Modal";
 import styled from "styled-components";
+import queryStringParser from "qs"
 
 function Widget() {
   const [show, setShow] = useState(false);
 
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    const url = window.location.href.split("?")[1];
+    const res = queryStringParser.parse(url, { ignoreQueryPrefix: true });
+    
+    if (!res) {
+      return;
+    }
+
+    setShow(true);
+  }, []);
 
   return (
     <Container>

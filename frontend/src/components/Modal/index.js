@@ -64,7 +64,7 @@ function ModalComponent({ show, setShow }) {
                     <span>~ OR ~</span>
                 </SectionContainer>
                 <SectionContainer>
-                    <TwitterButton>Follow on Twitter</TwitterButton>
+                    <TwitterButton onClick={handleContinueClick}>Follow on Twitter</TwitterButton>
                 </SectionContainer>
             </Modal.Body>
         </Modal>
