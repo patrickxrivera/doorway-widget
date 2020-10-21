@@ -1,10 +1,24 @@
-import React from 'react';
-import Button from "react-bootstrap/Button";
+import React, { useState } from 'react';
 import Modal from "react-bootstrap/Modal";
 import { getRequestToken } from '../../api/twitter';
+import { saveEmail } from "../../api/user";
 import { TWITTER_OAUTH_URL } from "../../utils/endpoints";
+import * as EmailValidator from 'email-validator';
+
+import {
+    EmailInputSectionContainer,
+    EmailInputContainer,
+    EmailInput,
+    EmailButton,
+    TwitterButton,
+    SectionContainer,
+    EmailErrorText
+} from "./styles";
 
 function ModalComponent({ show, setShow }) {
+    const [emailValue, setEmailValue] = useState("");
+    const [showEmailErrorMessage, setShowEmailErrorMessage] = useState(false);
+
     const handleClose = () => setShow(false);
   
     const handleContinueClick = async () => {
@@ -12,20 +26,45 @@ function ModalComponent({ show, setShow }) {
         window.location.href = `${TWITTER_OAUTH_URL}?oauth_token=${requestToken}`;
     }
 
+    const handleEmailChange = (e) => {
+        setEmailValue(e.target.value);
+    }
+
+    const handleEmailSubmit = async () => {
+        const isValidEmail = EmailValidator.validate(emailValue);
+        
+        if (!isValidEmail) {
+            setShowEmailErrorMessage(true);
+            return;
+        }
+
+        // TODO: handle error
+        const res = await saveEmail(emailValue);
+    }
+
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
             <Modal.Title>Welcome to Patrick's Follow Gate 👋</Modal.Title>
             </Modal.Header>
-            <Modal.Body>Follow me on Twitter and give me your email... or else 🗡️</Modal.Body>
-            <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-                Close
-            </Button>
-            <Button variant="primary" onClick={handleContinueClick}>
-                Continue
-            </Button>
-            </Modal.Footer>
+            <Modal.Body>
+                <span>To access this content, you must:</span>
+                <EmailInputSectionContainer>
+                    <EmailInputContainer>
+                        <EmailInput value={emailValue} onChange={handleEmailChange} placeholder="Enter your email..." type="email" autoComplete="off" />
+                    </EmailInputContainer>
+                    <EmailButton onClick={handleEmailSubmit} role="button" tabIndex="0">Submit</EmailButton>
+                </EmailInputSectionContainer>
+                {showEmailErrorMessage && <SectionContainer>
+                    <EmailErrorText>Invalid email. Please try again.</EmailErrorText>
+                </SectionContainer>}
+                <SectionContainer>
+                    <span>~ OR ~</span>
+                </SectionContainer>
+                <SectionContainer>
+                    <TwitterButton>Follow on Twitter</TwitterButton>
+                </SectionContainer>
+            </Modal.Body>
         </Modal>
     )
 }
