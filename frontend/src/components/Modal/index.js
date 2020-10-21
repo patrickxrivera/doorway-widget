@@ -53,7 +53,9 @@ function ModalComponent({ show, setShow }) {
                     <EmailInputContainer>
                         <EmailInput value={emailValue} onChange={handleEmailChange} placeholder="Enter your email..." type="email" autoComplete="off" />
                     </EmailInputContainer>
-                    <EmailButton onClick={handleEmailSubmit} role="button" tabIndex="0">Submit</EmailButton>
+                    <EmailButton onClick={handleEmailSubmit} role="button" tabIndex="0">
+                        Submit
+                    </EmailButton>
                 </EmailInputSectionContainer>
                 {showEmailErrorMessage && <SectionContainer>
                     <EmailErrorText>Invalid email. Please try again.</EmailErrorText>
