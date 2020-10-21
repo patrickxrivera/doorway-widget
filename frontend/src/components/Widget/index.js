@@ -13,7 +13,8 @@ function Widget() {
     const url = window.location.href.split("?")[1];
     const res = queryStringParser.parse(url, { ignoreQueryPrefix: true });
     
-    if (!res) {
+    if (Object.keys(res).length === 0) {
+      console.log("no response")
       return;
     }
 
