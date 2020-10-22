@@ -44,8 +44,8 @@ function ModalComponent({ show, setShow }) {
 
     return (
         <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-            <Modal.Title>Welcome to Patrick's Follow Gate 👋</Modal.Title>
+            <Modal.Header>
+                <Modal.Title>Welcome to Patrick's Follow Gate 👋</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <span>To access this content, you must:</span>

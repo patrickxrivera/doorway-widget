@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { setupSentry } from './setup/sentry';
-import 'regenerator-runtime/runtime'
+import 'regenerator-runtime/runtime';
 
 setupSentry();
 

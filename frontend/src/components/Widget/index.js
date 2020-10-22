@@ -5,7 +5,7 @@ import styled from "styled-components";
 import queryStringParser from "qs"
 
 function Widget() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
 
   const handleShow = () => setShow(true);
 
@@ -17,16 +17,10 @@ function Widget() {
       console.log("no response")
       return;
     }
-
-    setShow(true);
   }, []);
 
   return (
     <Container>
-      <Button onClick={handleShow} variant="secondary">Get Access</Button>
-      <FooterContainer>
-        <span>Made with ❤️ by <a href="https://usemicro.com" target="_blank">Micro</a></span>
-      </FooterContainer>
       <Modal show={show} setShow={setShow} />
     </Container>
   );
