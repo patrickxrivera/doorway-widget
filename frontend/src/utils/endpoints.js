@@ -1,7 +1,7 @@
 import { isProdEnv } from "./helpers";
 
 // TODO: move to config file
-const API_URL = isProdEnv() ? '' : "https://0d0e68bbb72c.ngrok.io"
+const API_URL = isProdEnv() ? 'https://follow-gate-backend.onrender.com' : "https://0d0e68bbb72c.ngrok.io";
 
 export const GET_REQUEST_TOKEN = `${API_URL}/twitter/request-token`;
 
