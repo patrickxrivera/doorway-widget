@@ -1,27 +1,70 @@
 import React, { useState, useEffect } from 'react';
-import Button from "react-bootstrap/Button";
 import Modal from "../Modal";
 import styled from "styled-components";
 import queryStringParser from "qs"
+import { getAccessToken, followOnTwitter } from '../../api/twitter';
+import InitialStep from '../Modal/InitialStep';
+import TwitterFollowSuccess from '../Modal/TwitterFollowSuccess';
+import Loading from '../Modal/Loading';
+import ErrorLogger from '../../services/error-logger';
+
+const STEPS = {
+  INITIAL_STEP: () => InitialStep,
+  TWITTER_FOLLOW_SUCCESS: () => TwitterFollowSuccess,
+  LOADING: () => Loading
+}
 
 function Widget() {
   const [show, setShow] = useState(true);
-
-  const handleShow = () => setShow(true);
+  const [StepComponent, setStepComponent] = useState(STEPS.INITIAL_STEP);
+  const [followedTwitterUsers, setFollowedTwitterUsers] = useState([]);
 
   useEffect(() => {
-    const url = window.location.href.split("?")[1];
-    const res = queryStringParser.parse(url, { ignoreQueryPrefix: true });
-    
-    if (Object.keys(res).length === 0) {
-      console.log("no response")
-      return;
-    }
-  }, []);
+    const handleQueryParams = async () => {
+      const url = window.location.href.split("?")[1];
+      const res = queryStringParser.parse(url, { ignoreQueryPrefix: true });
+      
+      if (Object.keys(res).length === 0) {
+        return;
+      }
 
+      try {
+        setStepComponent(STEPS.LOADING);
+
+        const { oauth_token, oauth_verifier } = res;
+
+        const { oAuthToken, oAuthTokenSecret } = await getAccessToken({
+          oAuthToken: oauth_token,
+          oAuthVerifier: oauth_verifier
+        });
+
+        const _res = await followOnTwitter({
+          oAuthToken,
+          oAuthTokenSecret
+        });
+
+        setStepComponent(STEPS.TWITTER_FOLLOW_SUCCESS);
+
+        setFollowedTwitterUsers(_res);
+      } catch (e) {
+        console.log({e})
+        ErrorLogger.send(e);
+        // TODO: create error step
+        setStepComponent(STEPS.INITIAL_STEP);
+      }
+    }
+    
+    handleQueryParams();
+  }, []);
+  
   return (
     <Container>
-      <Modal show={show} setShow={setShow} />
+      <Modal 
+        show={show} 
+        setShow={setShow} 
+        StepComponent={StepComponent}
+        followedTwitterUsers={followedTwitterUsers}
+      />
     </Container>
   );
 }
@@ -32,11 +75,6 @@ const Container = styled.div`
   margin-top: 16px;
   flex-direction: column;
   align-items: center;
-`
-
-const FooterContainer = styled.div`
-  font-size: 12px;
-  margin-top: 12px
 `
 
 export default Widget;

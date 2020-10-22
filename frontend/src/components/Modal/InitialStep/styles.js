@@ -58,6 +58,7 @@ export const EmailButton = styled.div`
     text-align: center;
     width: 90px;
     outline: none;
+    ${props => props.css}
 `
 
 export const TwitterButton = styled.div`
@@ -91,7 +92,7 @@ export const EmailInputSectionContainer = styled.div`
 export const SectionContainer = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 8px;
+    margin-top: 16px;
 `
 
 export const EmailErrorText = styled.span`
