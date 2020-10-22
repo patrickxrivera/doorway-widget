@@ -1,4 +1,9 @@
 const Twitter = require("twitter-lite");
+const { 
+  callbackUrl, 
+  twitterConsumerKey, 
+  twitterConsumerSecret 
+} = require("../../config");
 
 const TWITTER_BASE_URL = "https://twitter.com";
 
@@ -20,13 +25,12 @@ class TwitterService {
 
   constructor() {
       this.client = new Twitter({
-          consumer_key: process.env.TWITTER_CONSUMER_KEY,
-          consumer_secret: process.env.TWITTER_CONSUMER_SECRET
+          consumer_key: twitterConsumerKey,
+          consumer_secret: twitterConsumerSecret
       })
   }
 
   async getRequestToken() {
-      const callbackUrl = "https://usemicro.com/follow-gate";
       return this.client.getRequestToken(callbackUrl);
   }
 
@@ -39,8 +43,8 @@ class TwitterService {
 
   async follow({ oAuthToken, oAuthTokenSecret }) {
     const client = new Twitter({
-      consumer_key: process.env.TWITTER_CONSUMER_KEY,
-      consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+      consumer_key: twitterConsumerKey,
+      consumer_secret: twitterConsumerSecret,
       access_token_key: oAuthToken,
       access_token_secret: oAuthTokenSecret
     })
