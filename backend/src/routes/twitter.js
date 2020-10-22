@@ -2,13 +2,18 @@ const TwitterService = require("../services/twitter");
 
 const setupTwitterRoutes = (server) => {
     server.get("/twitter/request-token", async (req, res) => {
-        try {
-            const response = await TwitterService.getRequestToken();
-            res.json(response);
-        } catch (e) {
-            const errorMessage = typeof(e.message) === "string" ? e.message : e.errors[0].message;
-            res.status(500).json({ message: errorMessage });
-        }
+        const response = await TwitterService.getRequestToken();
+        res.json(response);
+    });
+
+    server.post("/twitter/access-token", async (req, res) => {
+        const response = await TwitterService.getAccessToken(req.body);
+        res.json(response);
+    });
+
+    server.post("/twitter/follow", async (req, res) => {
+        const response = await TwitterService.follow(req.body);
+        res.json(response);
     });
 }
 
