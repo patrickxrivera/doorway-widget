@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Modal from "../Modal";
+import Button from "react-bootstrap/Button"
 import styled from "styled-components";
 import queryStringParser from "qs"
 import { getAccessToken, followOnTwitter } from '../../api/twitter';
@@ -7,7 +8,6 @@ import InitialStep from '../Modal/InitialStep';
 import TwitterFollowSuccess from '../Modal/TwitterFollowSuccess';
 import Loading from '../Modal/Loading';
 import ErrorLogger from '../../services/error-logger';
-import api from '../../services/api';
 import Cache from '../../services/cache';
 
 const STEPS = {
@@ -17,7 +17,7 @@ const STEPS = {
 }
 
 function Widget() {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
   const [StepComponent, setStepComponent] = useState(STEPS.INITIAL_STEP);
   const [followedTwitterUsers, setFollowedTwitterUsers] = useState([]);
 
@@ -31,6 +31,7 @@ function Widget() {
       }
 
       try {
+        setShow(true);
         setStepComponent(STEPS.LOADING);
 
         const { oauth_token, oauth_verifier } = res;
@@ -56,9 +57,15 @@ function Widget() {
     
     handleQueryParams();
   }, []);
+
+  const handleShow = () => setShow(true);
   
   return (
     <Container>
+      <Button onClick={handleShow} variant="secondary">Get Access</Button>
+      <FooterContainer>
+        <span>Made with ❤️ by <a href="https://usemicro.com" target="_blank">Micro</a></span>
+      </FooterContainer>
       <Modal 
         show={show} 
         setShow={setShow} 
@@ -75,6 +82,11 @@ const Container = styled.div`
   margin-top: 16px;
   flex-direction: column;
   align-items: center;
+`
+
+const FooterContainer = styled.div`
+  font-size: 12px;
+  margin-top: 12px
 `
 
 export default Widget;
