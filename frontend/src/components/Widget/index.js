@@ -7,6 +7,8 @@ import InitialStep from '../Modal/InitialStep';
 import TwitterFollowSuccess from '../Modal/TwitterFollowSuccess';
 import Loading from '../Modal/Loading';
 import ErrorLogger from '../../services/error-logger';
+import api from '../../services/api';
+import Cache from '../../services/cache';
 
 const STEPS = {
   INITIAL_STEP: () => InitialStep,
@@ -32,22 +34,20 @@ function Widget() {
         setStepComponent(STEPS.LOADING);
 
         const { oauth_token, oauth_verifier } = res;
-
-        const { oAuthToken, oAuthTokenSecret } = await getAccessToken({
+        
+        const { token } = await getAccessToken({
           oAuthToken: oauth_token,
           oAuthVerifier: oauth_verifier
         });
-
-        const _res = await followOnTwitter({
-          oAuthToken,
-          oAuthTokenSecret
-        });
+        
+        Cache.saveToken(token);
+        
+        const followOnTwitterRes = await followOnTwitter();
 
         setStepComponent(STEPS.TWITTER_FOLLOW_SUCCESS);
 
-        setFollowedTwitterUsers(_res);
+        setFollowedTwitterUsers(followOnTwitterRes);
       } catch (e) {
-        console.log({e})
         ErrorLogger.send(e);
         // TODO: create error step
         setStepComponent(STEPS.INITIAL_STEP);

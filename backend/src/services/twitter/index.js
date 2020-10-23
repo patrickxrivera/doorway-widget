@@ -1,6 +1,6 @@
 const Twitter = require("twitter-lite");
 const { 
-  callbackUrl, 
+  callbackUrl: callbackUrlConfig, 
   twitterConsumerKey, 
   twitterConsumerSecret 
 } = require("../../config");
@@ -8,13 +8,13 @@ const {
 const TWITTER_BASE_URL = "https://twitter.com";
 
 class TwitterService {
-  static async getRequestToken() {
-    const svc = new TwitterService();
+  static async getRequestToken(options = {}) {
+    const svc = new TwitterService(options);
     return svc.getRequestToken();
   }
 
-  static async getAccessToken(data) {
-    const svc = new TwitterService();
+  static async getAccessToken(data, options = {}) {
+    const svc = new TwitterService(options);
     return svc.getAccessToken(data);
   }
 
@@ -23,15 +23,17 @@ class TwitterService {
     return svc.follow(data);
   }
 
-  constructor() {
-      this.client = new Twitter({
+  constructor({ client = null, callbackUrl = null } = {}) {
+      this.client = client ? new client() : new Twitter({
           consumer_key: twitterConsumerKey,
           consumer_secret: twitterConsumerSecret
       })
+
+      this.callbackUrl = callbackUrl || callbackUrlConfig;
   }
 
   async getRequestToken() {
-      return this.client.getRequestToken(callbackUrl);
+      return this.client.getRequestToken(this.callbackUrl);
   }
 
   async getAccessToken({ oAuthVerifier, oAuthToken}) {

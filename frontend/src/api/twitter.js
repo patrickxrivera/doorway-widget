@@ -1,31 +1,31 @@
-import axios from "axios";
 import { GET_REQUEST_TOKEN, GET_ACCESS_TOKEN, FOLLOW_ON_TWITTER } from "../utils/endpoints";
+import { getErrorMessageFromResponse } from "../utils/helpers";
+import * as Sentry from "@sentry/react";
+import api from "../services/api";
 
 export const getRequestToken = async () => {
-    const requestToken = await axios.get(GET_REQUEST_TOKEN);
-    const { oauth_token } = requestToken.data;
-    return oauth_token;
+    try {
+        const requestToken = await api.get(GET_REQUEST_TOKEN);
+        
+        const { oauth_token } = requestToken.data;
+        
+        return oauth_token;
+    } catch (e) {
+        Sentry.captureMessage(getErrorMessageFromResponse(e));
+        return null;
+    }
 }
 
 export const getAccessToken = async ({ oAuthToken, oAuthVerifier }) => {
-    const accessToken = await axios.post(GET_ACCESS_TOKEN, {
+    const accessToken = await api.post(GET_ACCESS_TOKEN, {
         oAuthToken,
         oAuthVerifier
     });
-    
-    const { oauth_token, oauth_token_secret } = accessToken.data;
-    
-    return {
-        oAuthToken: oauth_token,
-        oAuthTokenSecret: oauth_token_secret
-    };
+
+    return accessToken.data;
 }
 
-export const followOnTwitter = async ({ oAuthToken, oAuthTokenSecret }) => {
-    const res = await axios.post(FOLLOW_ON_TWITTER, {
-        oAuthToken,
-        oAuthTokenSecret
-    });
-
+export const followOnTwitter = async () => {
+    const res = await api.post(FOLLOW_ON_TWITTER);
     return res.data;
 }

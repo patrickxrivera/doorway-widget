@@ -1,3 +1,3 @@
 module.exports = {
-    callbackUrl: "https://a66d6171cfde.ngrok.io"
+    callbackUrl: "https://8893d2ae11a5.ngrok.io"
 }
