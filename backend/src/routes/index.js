@@ -3,11 +3,11 @@ const { setupWebhooks } = require("./webhooks");
 const { setupUserRoutes } = require("./user")
 const { setupTwitterRoutes } = require("./twitter")
 
-const setupRoutes = (server) => {
+const setupRoutes = (server, { auth }) => {
     setupHealthChecks(server);
     setupWebhooks(server);
     setupUserRoutes(server);
-    setupTwitterRoutes(server);
+    setupTwitterRoutes(server, { auth });
 }
 
 module.exports = { setupRoutes };
