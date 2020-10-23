@@ -1,7 +1,0 @@
-const INTERNET_IDENTITY_TYPES = {
-    TWITTER: "TWITTER"
-}
-
-module.exports = {
-    INTERNET_IDENTITY_TYPES
-}
